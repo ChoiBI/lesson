@@ -1,12 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./dark.css">
     <title>Document</title>
 </head>
+
 <body>
-    
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <span class="navbar-brand">Study</span>
+            <button class="navbar-toggler" type="button" id="dark-mode-button">
+                Dark
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Study</h1>
+            </div>
+        </div>
+
+    <script>
+        const darkModeButton = document.getElementById("dark-mode-button");
+        const body = document.body;
+
+        darkModeButton.addEventListener("click", function () {
+            body.classList.toggle("dark-mode");
+            darkModeButton.innerText = body.classList.contains("dark-mode")
+                ? "Light"
+                : "Dark";
+        });
+    </script>
 </body>
+
 </html>
