@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>랜덤 데이터 출력</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #008CBA;
+            color: #fff;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #006D9E;
+        }
+
+        #selected-data {
+            margin-top: 20px;
+        }
+
+        #selected-data p {
+            font-size: 24px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <script>
+        // 31개의 데이터를 배열로 저장
+        const data = ["데이터1", "데이터2", "데이터3", "데이터4", "데이터5", "데이터6", "데이터7", "데이터8", "데이터9",
+            "데이터10", "데이터11", "데이터12", "데이터13", "데이터14", "데이터15", "데이터16", "데이터17", "데이터18",
+            "데이터19", "데이터20", "데이터21", "데이터22", "데이터23", "데이터24", "데이터25", "데이터26", "데이터27",
+            "데이터28", "데이터29", "데이터30", "데이터31"];
+
+        // 랜덤으로 2개의 데이터 선택
+        function selectData() {
+            const selectedData = [];
+            for (let i = 0; i < 2; i++) {
+                const randomIndex = Math.floor(Math.random() * data.length);
+                selectedData.push(data[randomIndex]);
+                data.splice(randomIndex, 1); // 선택된 데이터는 배열에서 삭제
+            }
+            return selectedData;
+        }
+
+        // 선택된 데이터 출력
+        function printData() {
+            const selectedDataElement = document.getElementById("selected-data");
+            selectedDataElement.innerHTML = "";
+            const selectedData = selectData();
+            for (let i = 0; i < selectedData.length; i++) {
+                const dataElement = document.createElement("p");
+                dataElement.textContent = selectedData[i];
+                selectedDataElement.appendChild(dataElement);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>랜덤 데이터 출력</h1>
+    <button onclick="printData()">새로운 데이터 선택</button>
+    <div id="selected-data"></div>
+</body>
+
+</html>
