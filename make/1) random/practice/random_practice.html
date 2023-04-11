@@ -54,27 +54,10 @@
             "데이터28", "데이터29", "데이터30", "데이터31"];
 
         // 랜덤으로 2개의 데이터 선택
-        function selectData() {
-            const selectedData = [];
-            for (let i = 0; i < 2; i++) {
-                const randomIndex = Math.floor(Math.random() * data.length);
-                selectedData.push(data[randomIndex]);
-                data.splice(randomIndex, 1); // 선택된 데이터는 배열에서 삭제
-            }
-            return selectedData;
-        }
+    
 
         // 선택된 데이터 출력
-        function printData() {
-            const selectedDataElement = document.getElementById("selected-data");
-            selectedDataElement.innerHTML = "";
-            const selectedData = selectData();
-            for (let i = 0; i < selectedData.length; i++) {
-                const dataElement = document.createElement("p");
-                dataElement.textContent = selectedData[i];
-                selectedDataElement.appendChild(dataElement);
-            }
-        }
+    
     </script>
 </head>
 
