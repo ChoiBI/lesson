@@ -56,10 +56,9 @@
         // 랜덤으로 2개의 데이터 선택
         function selectData() {
             const selectedData = [];
-            for (let i = 0; i < 2; i++) {
+            for (let i = 0; i < 2; i ++) {
                 const randomIndex = Math.floor(Math.random() * data.length);
                 selectedData.push(data[randomIndex]);
-                data.splice(randomIndex, 1); // 선택된 데이터는 배열에서 삭제
             }
             return selectedData;
         }
@@ -67,12 +66,12 @@
         // 선택된 데이터 출력
         function printData() {
             const selectedData = selectData();
-            const selectedDataElement = document.getElementById("selected-data");
-            selectedDataElement.innerHTML = "";
-            for (let i = 0; i < selectedData.length; i++) {
-                const p = document.createElement("p");
+            const selectedDataElement = document.getElementById('#selected-data');
+            selectedDataElement.innerHTML = '';
+            for (let i = 0; i < selectedData.length; i ++) {
+                const p = document.createElment('p');
                 p.innerText = selectedData[i];
-                selectedDataElement.appendChild(p);
+                selectedDataElement = appendChild(p);
             }
         }
     </script>
