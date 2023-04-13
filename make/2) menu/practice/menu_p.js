@@ -8,6 +8,8 @@ const menuData = [
     { name: '사과주스', price: 3000 },
   ];
   
+  const addButton = document.querySelector('#add-button');
+
   // 메뉴 아이템을 생성하여 반환하는 함수
     function createMenuItem(name, price) {
         const menuItem = document.createElement('div');
