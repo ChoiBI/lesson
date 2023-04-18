@@ -8,6 +8,10 @@
   </head>
 
   <body>
+    <div>
+      <span id="header" style="font-size: 50px; position: fixed">test</span>
+    </div>
+
     <div style="overflow: hidden">
       <div class="slide-container">
         <div class="slide-box">
@@ -30,9 +34,20 @@
       <button class="before">이전</button>
     </div>
 
+    <div class="lorem" style="width: 200px; height: 100px; overflow-y: scroll">
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+      Lorem Ipsum has been the industry's standard dummy text ever since the
+      1500s, when an unknown printer took a galley of type and scrambled it to
+      make a type specimen book. It has survived not only five centuries, but
+      also the leap into electronic typesetting, remaining essentially
+      unchanged. It was popularised in the 1960s with the release of Letraset
+      sheets containing Lorem Ipsum passages, and more recently with desktop
+      publishing software like Aldus PageMaker including versions of Lorem
+      Ipsum.
+    </div>
+
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
-
       var pic = 1;
 
       $(".next").on("click", function () {
@@ -66,6 +81,31 @@
       $(".slide-3").on("click", function () {
         $(".slide-container").css("transform", "translateX(-200vw)");
       });
+
+      window.onscroll = function () {
+        myFunction();
+      };
+
+      var header = document.getElementById("header");
+
+      function myFunction() {
+        if (window.pageYOffset > 100) {
+          header.style.fontSize = "16px";
+        } else {
+          header.style.fontSize = "50px";
+        }
+      }
+
+      $(".lorem").on("scroll", function () {
+        var 스크롤양 = $(this).scrollTop();
+        var 실제높이 = $(this).prop("scrollHeight");
+        var 높이 = $(this).prop("clientHeight");
+        if (스크롤양 + 높이 >= 실제높이 - 100) {
+          alert("끝");
+        }
+      });
+
+      console.log(스크롤양);
     </script>
   </body>
 
@@ -81,7 +121,7 @@
     }
 
     .slide-box img {
-      width: 100%;
+      width: 30%;
     }
   </style>
 </html>
