@@ -1,6 +1,11 @@
-$('.tab-button').eq(0).on('click', function() {
-    $('.tab-button').removeClass('orange');
-    $(this).addClass('orange');
-    $('.tab-content').removeClass('show');
-    $('.tab-content').eq(0).addClass('show');
+
+$('.list').click(function(e) {
+    tapOpen(e.target.dataset.id)
 })
+
+function tapOpen(i) {
+$(".tab-button").removeClass("orange");
+$(".tab-button").eq(i).addClass("orange");
+$(".tab-content").removeClass("show");
+$(".tab-content").eq(i).addClass("show");
+}
