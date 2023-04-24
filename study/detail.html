@@ -58,25 +58,40 @@
       }
     </style>
 
+    <div class="container mt-3">
+      <div class="card p-3">
+        <span id="name">상품명</span>
+        <span id="price">가격</span>
+      </div>
+    </div>
+
     <div class="container mt-5">
       <ul class="list">
         <li class="tab-button" data-id="0">Products</li>
-        <li class="tab-button orange" data-id ="1">Information</li>
+        <li class="tab-button orange" data-id="1">Information</li>
         <li class="tab-button" data-id="2">Shipping</li>
       </ul>
       <div class="tab-content">
         <p>상품설명입니다test. Product</p>
       </div>
       <div class="tab-content show">
-        <p>스펙설명입니다test. Information</p>
+        <p id="test"></p>
       </div>
       <div class="tab-content">
         <p>배송정보입니다test. Shipping</p>
       </div>
     </div>
 
+    <script>
+      var car = { 차이름: "BMW", 가격: [50000,3000,4000] };
+      document.querySelector("#price").innerHTML = car['차이름'];
+   
+
+
+
+    </script>
+
     <!-- Optional JavaScript -->
-    
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="tab.js"></script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
