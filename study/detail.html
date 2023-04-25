@@ -7,6 +7,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
     <!-- Bootstrap CSS -->
     <link
@@ -56,6 +57,10 @@
       .show {
         display: block;
       }
+
+      .form-hide {
+        display: none;
+      }
     </style>
 
     <div class="container mt-3">
@@ -82,17 +87,61 @@
       </div>
     </div>
 
+    <form class="container my-5 form-group">
+      <p>상품선택</p>
+      <select class="form-select mt-2">
+        <option value="모자">모자</option>
+        <option value="셔츠">셔츠</option>
+      </select>
+      <select class="form-select mt-2">
+        <option>95</option>
+        <option>100</option>
+      </select>
+    </form>
+
     <script>
-      var car = { 차이름: "BMW", 가격: [50000,3000,4000] };
-      document.querySelector("#price").innerHTML = car['차이름'];
-   
+      var car = { 차이름: "BMW", 가격: [50000, 3000, 4000] };
+      document.querySelector("#price").innerHTML = car["차이름"];
 
+      var pants = ["28", "30", "32", "34"];
+      $(".form-select")
+        .eq(0)
+        .on("input", function (e) {
+          var value = this.value; // 수정: 선택자 앞에 점(.) 추가
+          if (value == "셔츠") {
+            $(".form-select").eq(1).empty();
+            $(".form-select").eq(1).empty().append("<option>95</option>"); // 수정: 선택자 앞에 점(.) 추가
+          } else if (value == "모자") {
+            $(".form-select").eq(1).empty();
+            pants.forEach(function (e) {
+              $(".form-select").eq(1).append(`<option>${e}</option>`);
+            });
+          }
+        });
 
+      function 구구단() {
+        for (let i = 2; i < 10; i++) {
+          for (let j = 1; j < 10; j++) {
+            console.log(i * j);
+          }
+        }
+      }
 
+      function 재수할래(점수들, 내점수) {
+        총합 = 0;
+        점수들.forEach(function (e) {
+          총합 += e;
+        });
+        평균 = 총합 / 점수들.length;
+        if ( 평균 < 내점수) {
+          console.log('현역축하');
+        } else {
+          console.log('재수하셈')
+        }
+      }
     </script>
 
     <!-- Optional JavaScript -->
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="tab.js"></script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script
