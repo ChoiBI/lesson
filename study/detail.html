@@ -63,92 +63,84 @@
       }
     </style>
 
-    <div class="container mt-3">
-      <div class="card p-3">
-        <span id="name">상품명</span>
-        <span id="price">가격</span>
+    <div class="container">
+      <div class="row">
+        <!-- <div class="col-sm-4">
+          <img src="https://via.placeholder.com/600" class="w-100" />
+          <h5>Card title</h5>
+          <p>가격 : 70000</p>
+        </div> -->
       </div>
     </div>
 
-    <div class="container mt-5">
-      <ul class="list">
-        <li class="tab-button" data-id="0">Products</li>
-        <li class="tab-button orange" data-id="1">Information</li>
-        <li class="tab-button" data-id="2">Shipping</li>
-      </ul>
-      <div class="tab-content">
-        <p>상품설명입니다test. Product</p>
-      </div>
-      <div class="tab-content show">
-        <p id="test"></p>
-      </div>
-      <div class="tab-content">
-        <p>배송정보입니다test. Shipping</p>
-      </div>
+    <div class="container" id="container2">
+      <button class="btn btn-danger" id="more">더보기</button>
     </div>
-
-    <form class="container my-5 form-group">
-      <p>상품선택</p>
-      <select class="form-select mt-2">
-        <option value="모자">모자</option>
-        <option value="셔츠">셔츠</option>
-      </select>
-      <select class="form-select mt-2">
-        <option>95</option>
-        <option>100</option>
-      </select>
-    </form>
 
     <script>
-      var car = { 차이름: "BMW", 가격: [50000, 3000, 4000] };
-      document.querySelector("#price").innerHTML = car["차이름"];
+      var products = [
+        { id: 0, price: 70000, title: "Blossom dress" },
+        { id: 1, price: 60000, title: "Springfield shirt" },
+        { id: 2, price: 50000, title: "Blue Jeans" },
+      ];
 
-      var pants = ["28", "30", "32", "34"];
-      $(".form-select")
-        .eq(0)
-        .on("input", function (e) {
-          var value = this.value; // 수정: 선택자 앞에 점(.) 추가
-          if (value == "셔츠") {
-            $(".form-select").eq(1).empty();
-            $(".form-select").eq(1).empty().append("<option>95</option>"); // 수정: 선택자 앞에 점(.) 추가
-          } else if (value == "모자") {
-            $(".form-select").eq(1).empty();
-            pants.forEach(function (e) {
-              $(".form-select").eq(1).append(`<option>${e}</option>`);
+      for (let i = 0; i < products.length; i++) {
+        var row = document.querySelector(".row");
+
+        var div = document.createElement("div");
+        div.classList.add("col-sm-4");
+
+        var img = document.createElement("img");
+        img.classList.add("w-100");
+        img.src = "https://via.placeholder.com/600";
+
+        var h5 = document.createElement("h5");
+        h5.innerHTML = products[i].title;
+
+        var p = document.createElement("p");
+        p.innerHTML = "가격: " + products[i].price;
+
+        row.appendChild(div);
+        div.append(img, h5, p);
+      }
+
+      var clickCount = 0;
+      $("#more").click(function () {
+        clickCount++;
+        console.log(clickCount);
+      });
+
+      $("#more").click(function () {
+        if ((clickCount == 1)) {
+          $.get("https://codingapple1.github.io/js/more1.json").done((data) => {
+            data.forEach((a, i) => {
+              var 템플릿 = `<div class="col-sm-4">
+            <img src="https://via.placeholder.com/600" class="w-100" />
+            <h5>${data[i].title}</h5>
+            <p>${data[i].price}</p>
+           </div>`;
+              $(".row").append(템플릿);
             });
-          }
-        });
-
-      function 구구단() {
-        for (let i = 2; i < 10; i++) {
-          for (let j = 1; j < 10; j++) {
-            console.log(i * j);
-          }
+          });
+        } else if ((clickCount == 2)) {
+          $.get("https://codingapple1.github.io/js/more2.json").done((data) => {
+            console.log(data)
+            data.forEach((a, i) => {
+              var 템플릿 = `<div class="col-sm-4">
+             <img src="https://via.placeholder.com/600" class="w-100" />
+             <h5>${data[i].title}</h5>
+             <p>${data[i].price}</p>
+             </div>`;
+              $(".row").append(템플릿);
+            });
+          });
         }
-      }
-
-      function 재수할래(점수들, 내점수) {
-        총합 = 0;
-        점수들.forEach(function (e) {
-          총합 += e;
-        });
-        평균 = 총합 / 점수들.length;
-        if ( 평균 < 내점수) {
-          console.log('현역축하');
-        } else {
-          console.log('재수하셈')
-        }
-      }
+      });
     </script>
 
     <!-- Optional JavaScript -->
     <script src="tab.js"></script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
-    ></script>
     <script
       src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
       integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
