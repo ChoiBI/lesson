@@ -15,7 +15,7 @@
     <div style="overflow: hidden">
       <div class="slide-container">
         <div class="slide-box">
-          <img src="car1.png" />
+          <img src="car1.png" draggable="false" />
         </div>
         <div class="slide-box">
           <img src="car2.png" />
@@ -105,7 +105,38 @@
         }
       });
 
-      console.log(스크롤양);
+      var 시작좌표 = 0;
+      var 움직임 = 0;
+      var 눌렀냐 = false;
+
+      for (let i = 0; i < 2; i++) {
+        $(".slide-box").eq(i).on("mousedown", function (e) {
+            시작좌표 = e.clientX;
+            눌렀냐 = true;
+          });
+
+        $(".slide-box").eq(i).on("mousemove", function (e) {
+            움직임 = e.clientX - 시작좌표;
+            if (눌렀냐 == true) {
+              $(".slide-container").css("transform", `translateX(${움직임}px)`);
+            }
+          });
+
+
+        $(".slide-box").eq(0).on("mouseup", function (e) {
+            눌렀냐 = false;
+            console.log(e.clientX - 시작좌표)
+        if (e.clientX - 시작좌표 < -100) {
+            $(".slide-container").css("transform", "translateX(-100vw)");
+        } else {
+            $(".slide-container").css("transform", "translateX(0)");
+        }
+
+        setTimeout(()=> {
+          $('.slide-container').css('transition', 'none')
+        },1000) 
+        })}
+
     </script>
   </body>
 
@@ -113,6 +144,7 @@
     .slide-container {
       width: 300vw;
       transition: all 1s;
+      font-size: 0;
     }
 
     .slide-box {
@@ -121,7 +153,7 @@
     }
 
     .slide-box img {
-      width: 30%;
+      width: 100%;
     }
   </style>
 </html>
