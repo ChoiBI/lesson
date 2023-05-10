@@ -3,43 +3,81 @@ const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 const MongoClient = require("mongodb").MongoClient;
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
-//신버전이라 바뀜
 var db;
+
+app.listen(8000, function () {
+  console.log("연결완료");
+});
+
 MongoClient.connect(
   "mongodb+srv://qldnjs23:style12121@cluster0.am3ri5e.mongodb.net/?retryWrites=true&w=majority"
 )
-
   .then(function (client) {
-    app.post("/add", function (req, res) {
-      res.send("전송완료");
-      db = client.db("todoapp");
-      db.collection("post").insertOne({ title: req.body.title, pw: req.body.pw },function (에러, 결과) {
-          console.log("저장완료");
-        }
-      );
-
-      console.log(req.body.title);
-      console.log(req.body.pw);
-    });
-
-    app.listen(8080, function () {
-      console.log("연결완료");
-    });
+    db = client.db("todoapp"); // db 변수에 DB 연결 객체 할당
+    console.log("DB 연결 완료");
   })
+
   .catch(function (err) {
     console.log(err);
   });
-
-app.get("/beauty", function (req, res) {
-  res.send("beauty page");
-});
 
 app.get("/write", function (req, res) {
   res.sendFile(__dirname + "/write.html");
 });
 
+var allPosts;
+app.post("/add", function (req, res) {
+  res.send("전송완료");
+  db.collection("counter")
+    .findOne({ name: "게시물갯수" })
+    .then(function (result) {
+      allPosts = result.totalPost;
+
+      db.collection("post")
+        .insertOne({
+          _id: allPosts + 1,
+          title: req.body.title,
+          pw: req.body.pw,
+        })
+        .then(function (result) {
+          console.log(result.allPosts);
+          console.log(req.body.title);
+          console.log(req.body.pw);
+          console.log("저장완료");
+        });
+      db.collection("counter")
+        .updateOne({ name: "게시물갯수" }, { $inc: { totalPost: 1 } })
+        .then(function (err, result) {
+          if (err) {
+            return console.log(err);
+          }
+          console.log("업데이트완료");
+        });
+    });
+});
+
 app.get("/list", function (req, res) {
-    res.render(__dirname + "/list.ejs")
+  db.collection("post")
+    .find()
+    .toArray()
+    .then(function (result) {
+      res.render("list.ejs", { post: result });
+    });
+});
+
+app.delete('/delete', function(req, res){
+  console.log(req.body);
 })
+
+// app.get('/list', function(req, res){
+//   db.collection('post').find().toArray(function(err, result){
+//     console.log(result)
+//     응답.render('list.ejs', { posts : result })
+//   })
+// })
+
+app.get("/beauty", function (req, res) {
+  res.send("beauty page");
+});
