@@ -29,7 +29,6 @@ app.get("/write", function (req, res) {
 
 var allPosts;
 app.post("/add", function (req, res) {
-  res.send("전송완료");
   db.collection("counter")
     .findOne({ name: "게시물갯수" })
     .then(function (result) {
@@ -55,6 +54,7 @@ app.post("/add", function (req, res) {
           }
           console.log("업데이트완료");
         });
+      res.redirect("/list");
     });
 });
 
@@ -67,17 +67,48 @@ app.get("/list", function (req, res) {
     });
 });
 
-app.delete('/delete', function(req, res){
+app.delete("/delete", function (req, res) {
   console.log(req.body);
-})
+  req.body._id = parseInt(req.body._id);
+  db.collection("post")
+    .deleteOne(req.body)
+    .then(function (result) {
+      res.status("200").send({ message: "성공했습니다." });
+    });
+  db.collection("counter")
+    .updateOne({ name: "게시물갯수" }, { $inc: { totalPost: -1 } })
+    .then(function (result) {
+      console.log("삭제완료");
+    });
+});
 
-// app.get('/list', function(req, res){
-//   db.collection('post').find().toArray(function(err, result){
-//     console.log(result)
-//     응답.render('list.ejs', { posts : result })
-//   })
-// })
+app.get("/edit/:id", function (req, res) {
+  db.collection("post")
+    .findOne({ _id: parseInt(req.params.id) })
+    .then(function (result) {
+      console.log(parseInt(req.params.id));
+      res.render("edit.ejs", { data: result });
+    });
+});
 
-app.get("/beauty", function (req, res) {
-  res.send("beauty page");
+app.post("/edit/:id", function (req, res) {
+  db.collection("post")
+    .updateOne(
+      { _id: parseInt(req.params.id) },
+      { $set: { title: req.body.title, pw: req.body.pw } }
+    )
+    .then(function (result) {
+      console.log(parseInt(req.params.id));
+      console.log(req.body.pw);
+      res.redirect("/list");
+    });
+});
+
+app.get("/detail/:id", function (req, res) {
+  db.collection("post")
+    .findOne({ _id: parseInt(req.params.id) })
+    .then(function (result) {
+      console.log(result);
+      res.render("detail.ejs", { data: result });
+    });
 });
