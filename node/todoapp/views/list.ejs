@@ -64,6 +64,7 @@
         <p>비번: <%= post[i].pw %></p>
         <button class="delete" data-id="<%= post[i]._id %>">삭제</button>
         <button class="edit" data-id="<%= post[i]._id %>">수정</button>
+        <button class="chat" data-id="<%= post[i]._id %>">채팅</button>
       </li>
       <% } %>
     </ul>
@@ -95,6 +96,12 @@
         var num = e.target.dataset.id;
         location.href = "/edit/" + num;
       })
+
+      $(".chat").click(function (e) {
+        var num = e.target.dataset.id;
+        location.href = "/chat/" + num;
+      })
+
     </script>
 
     <!-- Optional JavaScript -->

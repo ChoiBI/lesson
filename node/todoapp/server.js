@@ -28,34 +28,6 @@ app.get("/write", function (req, res) {
   res.sendFile(__dirname + "/write.html");
 });
 
-var allPosts;
-app.post("/add", function (req, res) {
-  db.collection("counter")
-    .findOne({ name: "게시물갯수" })
-    .then(function (result) {
-      allPosts = result.totalPost;
-
-      db.collection("post")
-        .insertOne({
-          _id: allPosts + 1,
-          title: req.body.title,
-          pw: req.body.pw,
-        })
-        .then(function (result) {
-          console.log(result.allPosts);
-          console.log(req.body.title);
-          console.log(req.body.pw);
-          console.log("저장완료");
-        });
-      db.collection("counter")
-        .updateOne({ name: "게시물갯수" }, { $inc: { totalPost: 1 } })
-        .then(function (result) {
-          console.log("업데이트완료");
-        });
-      res.redirect("/list");
-    });
-});
-
 app.get("/list", function (req, res) {
   db.collection("post")
     .find()
@@ -131,11 +103,11 @@ app.post('/login', passport.authenticate('local', {
   res.redirect("/mypage");
 });
 
-app.get('/mypage', loginCheck, function(req,res){
-  res.render('mypage.ejs', {user: req.user.id})
+app.get('/mypage', loginCheck, function (req, res) {
+  res.render('mypage.ejs', { user: req.user.id })
 })
 
-function loginCheck(req,res,next) {
+function loginCheck(req, res, next) {
   if (req.user) {
     next()
   } else {
@@ -143,7 +115,7 @@ function loginCheck(req,res,next) {
   }
 }
 
-app.get('/search', function(req, res) {
+app.get('/search', function (req, res) {
   var 검색조건 = [
     {
       $search: {
@@ -155,9 +127,9 @@ app.get('/search', function(req, res) {
       }
     }
   ]
-  db.collection('post').aggregate(검색조건).toArray().then(function(result){
+  db.collection('post').aggregate(검색조건).toArray().then(function (result) {
     console.log('검색완료');
-    res.render('list.ejs', {post: result});
+    res.render('list.ejs', { post: result });
   });
 });
 
@@ -167,30 +139,105 @@ passport.use(new LocalStrategy({
   passwordField: 'pw',
   session: true,
   passReqToCallback: false,
-}, function(입력아이디, 입력비번, done) {
+}, function (입력아이디, 입력비번, done) {
   console.log(입력아이디, 입력비번);
-  db.collection('login').findOne({id: 입력아이디}).then(function(result,err){
+  db.collection('login').findOne({ id: 입력아이디 }).then(function (result, err) {
     if (err) return done(err)
 
-    if (!result) return done(null, false, {message: '없는 아이디임'})
+    if (!result) return done(null, false, { message: '없는 아이디임' })
     if (입력비번 == result.pw) {
       return done(null, result)
     } else {
-      return done(null, false, {message: '비번틀림'})
+      return done(null, false, { message: '비번틀림' })
     }
 
   })
 }))
 
 
-passport.serializeUser(function(user, done){
+passport.serializeUser(function (user, done) {
   done(null, user.id)
 });
 
-passport.deserializeUser(function(id, done){
-  db.collection('login').findOne({id: id}).then(function(result, err){
+passport.deserializeUser(function (id, done) {
+  db.collection('login').findOne({ id: id }).then(function (result, err) {
     done(null, result)
   })
-  
-}); 
 
+});
+
+
+app.post('/resister', function (req, res) {
+  db.collection('login').insertOne({ id: req.body.id2, pw: req.body.pw2 }).then(function (result) {
+    res.redirect('/list')
+  })
+})
+
+var allPosts;
+app.post("/add", function (req, res) {
+  db.collection("counter")
+    .findOne({ name: "게시물갯수" })
+    .then(function (result) {
+      allPosts = result.totalPost;
+
+      db.collection("post")
+        .insertOne({
+          _id: allPosts + 1,
+          title: req.body.title,
+          pw: req.body.pw,
+          writer: req.user._id
+        })
+        .then(function (result) {
+          console.log(result.allPosts);
+          console.log(req.body.title);
+          console.log(req.body.pw);
+          console.log("저장완료");
+        });
+      db.collection("counter")
+        .updateOne({ name: "게시물갯수" }, { $inc: { totalPost: 1 } })
+        .then(function (result) {
+          console.log("업데이트완료");
+        });
+      res.redirect("/list");
+    });
+});
+
+
+let multer = require('multer');
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '.public/image')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+});
+
+var upload = multer({ storage: storage });
+
+app.get("/upload", function (req, res) {
+  res.render('upload.ejs')
+})
+
+app.post("/upload", upload.single('profile'), function (req, res) {
+  res.send('업로드 완료')
+})
+
+app.post('/chat/:id', function (req, res) {
+  db.collection("chatroom")
+    .insertOne({
+      member: [req.user._id, req.writer._id],
+      date: newDate(),
+      chatroom: abc
+    })
+    console.log("완료")
+})
+
+app.get("/chat/:id", function (req, res) {
+  db.collection("post")
+    .findOne({ _id: parseInt(req.params.id) })
+    .then(function (result) {
+      console.log(parseInt(req.params.id));
+      res.render("chat.ejs", { data: result });
+    });
+});
